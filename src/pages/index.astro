@@ -1,56 +1,53 @@
 ---
 /**
- * Home — rebuilt from the components as the Phase 1 pixel-parity check against
- * ui-mockups/index.html. Copy is the mockup copy for now; in Phase 2/3 it comes
- * from the CMS (Site settings + Home page), and the pre-launch toggle will swap
- * this for the Coming-soon layout.
+ * Home — copy and photo now come from the content layer (Sanity when configured,
+ * fallback copy otherwise). Phase 3 adds the pre-launch toggle to swap this for
+ * the Coming-soon layout when `settings.preLaunch` is on.
  */
 import PageLayout from '../components/PageLayout.astro';
 import Photo from '../components/Photo.astro';
 import Signup from '../components/Signup.astro';
+import { getSiteSettings, getHomePage } from '../lib/content';
+
+const settings = await getSiteSettings();
+const home = await getHomePage();
 ---
 
 <PageLayout title="Coffee Kidd Cafe — Home" current="home">
-  <p slot="info">A space for coffee, tea, matcha and company.</p>
+  <p slot="info">{settings.tagline}</p>
+
   <p slot="info">
-    McGinley Square<br />Jersey City, NJ<br />
-    <span class="muted">Address posted before opening</span>
+    {settings.addressLines.map((line, i) => (<>{i > 0 && <br />}{line}</>))}
+    {settings.addressNote && (<><br /><span class="muted">{settings.addressNote}</span></>)}
   </p>
+
   <p slot="info">
     Hours<br />
-    <span class="muted">Posted before opening. Opening late fall 2026.</span>
+    {
+      settings.hoursLines?.length
+        ? settings.hoursLines.map((line, i) => (<>{i > 0 && <br />}{line}</>))
+        : <span class="muted">{settings.hoursNote}</span>
+    }
   </p>
-  <p slot="info" class="muted">Now on the walls: <span class="ink">to be announced</span></p>
+
+  {
+    settings.nowOnWalls && (
+      <p slot="info" class="muted">
+        Now on the walls: <span class="ink">{settings.nowOnWalls}</span>
+      </p>
+    )
+  }
 
   <div class="media">
-    <Photo
-      ratio="4 / 3"
-      placeholder="photo: the room, daylight, one table"
-      caption="The room, before we moved in."
-    />
+    <Photo {...home.photo} />
   </div>
 
   <div class="prose">
-    <p>
-      Coffee Kidd was born from the friendship of two inseparable best friends, Natalia Amaya and
-      Zachary Kidd, who spent the past three years working side by side and dreaming up something of
-      their own. Natalia, a lifelong Jersey City resident, and Zach, who dropped into Jersey City all
-      the way from Idaho, bring a combined 20 years of hospitality experience to the shop.
-    </p>
-    <p>
-      A warm, welcoming neighborhood space centered around great coffee, genuine connection, and
-      community. A place to meet, create, and unwind. Art shows, food drives, local bakers, the
-      occasional late night.
-    </p>
+    {home.body.map((para) => <p>{para}</p>)}
   </div>
 
   <div class="prose">
-    <Signup
-      title="Hear about opening day first"
-      placeholder="email or phone number"
-      actionLabel="Sign up"
-      note="Email or text. Openings and events only."
-    />
+    <Signup title={home.signupTitle} actionLabel="Sign up" note={home.signupNote} />
   </div>
 </PageLayout>
 
