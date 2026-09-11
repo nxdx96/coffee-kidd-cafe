@@ -1,0 +1,69 @@
+---
+/**
+ * Signup — the inline "one line" mailing capture used on Home and Coming-soon:
+ * an optional title, then a single boxless row (input + arrow action sharing one
+ * ink bottom rule), then an optional muted note.
+ *
+ * The submit is inert until Phase 4 wires it to the mailing service.
+ */
+import Action from './Action.astro';
+
+interface Props {
+  title?: string;
+  placeholder?: string;
+  actionLabel?: string;
+  note?: string;
+  name?: string;
+}
+
+const {
+  title,
+  placeholder = 'email or phone number',
+  actionLabel = 'Sign up',
+  note,
+  name = 'contact',
+} = Astro.props;
+---
+
+<div class="signup">
+  {title && <div class="signup__title">{title}</div>}
+  <form class="signup__row">
+    <input class="signup__input" type="text" name={name} placeholder={placeholder} />
+    <Action label={actionLabel} as="submit" />
+  </form>
+  {note && <div class="signup__note">{note}</div>}
+</div>
+
+<style>
+  .signup__title {
+    margin-bottom: 10px;
+  }
+  .signup__row {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  .signup__input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    padding: 0;
+    outline: none;
+  }
+  .signup__input::placeholder {
+    color: var(--placeholder);
+  }
+  .signup__note {
+    font-size: var(--size-small);
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .signup :global(.action) {
+    white-space: nowrap;
+  }
+</style>

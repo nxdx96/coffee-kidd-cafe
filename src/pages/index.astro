@@ -1,22 +1,61 @@
 ---
 /**
- * Home (placeholder).
- *
- * Phase 0 stub only — proves the layout, fonts, tokens, and cat cursor load.
- * The real Home / Coming-soon page is built in Phase 3 from ui-mockups/index.html.
+ * Home — rebuilt from the components as the Phase 1 pixel-parity check against
+ * ui-mockups/index.html. Copy is the mockup copy for now; in Phase 2/3 it comes
+ * from the CMS (Site settings + Home page), and the pre-launch toggle will swap
+ * this for the Coming-soon layout.
  */
-import BaseLayout from '../layouts/BaseLayout.astro';
+import PageLayout from '../components/PageLayout.astro';
+import Photo from '../components/Photo.astro';
+import Signup from '../components/Signup.astro';
 ---
 
-<BaseLayout title="Coffee Kidd Cafe — Home">
-  <main style="max-width:1200px;margin:0 auto;padding:36px 40px">
-    <div style="font-family:var(--font-wordmark);font-size:var(--size-wordmark);line-height:1;margin-bottom:34px">
-      Coffee Kidd Cafe
-    </div>
-    <p>A space for coffee, tea, matcha and company.</p>
-    <p style="color:var(--muted)">
-      Foundation ready (Phase 0). Pages are built in the phases ahead — see
-      <a href="https://github.com/">plan.md</a>.
+<PageLayout title="Coffee Kidd Cafe — Home" current="home">
+  <p slot="info">A space for coffee, tea, matcha and company.</p>
+  <p slot="info">
+    McGinley Square<br />Jersey City, NJ<br />
+    <span class="muted">Address posted before opening</span>
+  </p>
+  <p slot="info">
+    Hours<br />
+    <span class="muted">Posted before opening. Opening late fall 2026.</span>
+  </p>
+  <p slot="info" class="muted">Now on the walls: <span class="ink">to be announced</span></p>
+
+  <div class="media">
+    <Photo
+      ratio="4 / 3"
+      placeholder="photo: the room, daylight, one table"
+      caption="The room, before we moved in."
+    />
+  </div>
+
+  <div class="prose">
+    <p>
+      Coffee Kidd was born from the friendship of two inseparable best friends, Natalia Amaya and
+      Zachary Kidd, who spent the past three years working side by side and dreaming up something of
+      their own. Natalia, a lifelong Jersey City resident, and Zach, who dropped into Jersey City all
+      the way from Idaho, bring a combined 20 years of hospitality experience to the shop.
     </p>
-  </main>
-</BaseLayout>
+    <p>
+      A warm, welcoming neighborhood space centered around great coffee, genuine connection, and
+      community. A place to meet, create, and unwind. Art shows, food drives, local bakers, the
+      occasional late night.
+    </p>
+  </div>
+
+  <div class="prose">
+    <Signup
+      title="Hear about opening day first"
+      placeholder="email or phone number"
+      actionLabel="Sign up"
+      note="Email or text. Openings and events only."
+    />
+  </div>
+</PageLayout>
+
+<style>
+  .ink {
+    color: var(--ink);
+  }
+</style>

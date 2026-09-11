@@ -1,0 +1,47 @@
+---
+/**
+ * PageLayout — the two-column "paper" page frame (aesthetic 7a).
+ *
+ * Slots:
+ *   - info    → left-column paragraphs under the wordmark (tagline, address, hours…)
+ *   - default → right-column content blocks (photos, prose, forms)
+ *   - footer  → the bottom footer line (falls back to "email · © 2026")
+ *
+ * The wordmark, nav (bottom-pinned on desktop, end on mobile), and footer are
+ * provided by the frame; pages fill the slots. See global.css `.page*` rules.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from './Nav.astro';
+import { site } from '../data/site';
+import type { NavKey } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Which nav item is the current page (gets the ink underline). */
+  current: NavKey;
+  /** Trailing nav link: Instagram on most pages, Contact on the contact page. */
+  trailing?: 'instagram' | 'contact';
+}
+
+const { title, description, current, trailing = 'instagram' } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="page">
+    <div class="page__left">
+      <div class="page__top">
+        <div class="page__wordmark">Coffee Kidd Cafe</div>
+        <div class="page__info"><slot name="info" /></div>
+      </div>
+      <nav class="page__nav"><Nav current={current} trailing={trailing} /></nav>
+    </div>
+
+    <div class="page__right">
+      <div class="page__content"><slot /></div>
+      <footer class="page__footer">
+        <slot name="footer">{site.email} · {site.copyright}</slot>
+      </footer>
+    </div>
+  </main>
+</BaseLayout>

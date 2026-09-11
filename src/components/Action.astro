@@ -1,0 +1,45 @@
+---
+/**
+ * Action — the only "button" in the system: a plain text link with a trailing
+ * arrow (e.g. "Sign up →", "Send →", "Keep me in the loop →").
+ *
+ * Renders an <a> by default, or a submit <button> styled as a link when used
+ * inside a form (`as="submit"`).
+ */
+interface Props {
+  label: string;
+  href?: string;
+  as?: 'link' | 'submit';
+}
+
+const { label, href = '#', as = 'link' } = Astro.props;
+---
+
+{
+  as === 'submit' ? (
+    <button type="submit" class="action">
+      {label} →
+    </button>
+  ) : (
+    <a href={href} class="action">
+      {label} →
+    </a>
+  )
+}
+
+<style>
+  .action {
+    align-self: flex-start;
+    text-decoration: none;
+    color: inherit;
+    font: inherit;
+    /* reset button chrome so submit matches the link exactly */
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: inherit;
+  }
+  .action:hover {
+    color: var(--muted);
+  }
+</style>
