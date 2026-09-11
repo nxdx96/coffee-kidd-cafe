@@ -109,8 +109,9 @@ p {
 .page__wordmark {
   font-family: var(--font-wordmark);
   font-size: var(--size-wordmark);
+  font-weight: 400;
   line-height: 1;
-  margin-bottom: 34px;
+  margin: 0 0 34px;
 }
 
 /* Info paragraphs sit 22px apart (from the mockup). */

@@ -14,7 +14,12 @@ const settings = await getSiteSettings();
 const contact = await getContactPage();
 ---
 
-<PageLayout title="Coffee Kidd Cafe — Contact" current="contact" trailing="contact">
+<PageLayout
+  title="Coffee Kidd Cafe — Contact"
+  description="Get in touch with Coffee Kidd Cafe in McGinley Square, Jersey City — or just come in for a coffee."
+  current="contact"
+  trailing="contact"
+>
   <p slot="info">Contact</p>
   <p slot="info">
     <a class="ul" href={`mailto:${settings.email}`}>{settings.email}</a>
