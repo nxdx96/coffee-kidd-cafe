@@ -9,6 +9,7 @@ import Photo from '../components/Photo.astro';
 import Signup from '../components/Signup.astro';
 import ComingSoon from '../components/ComingSoon.astro';
 import { getSiteSettings, getHomePage } from '../lib/content';
+import { forms } from '../lib/forms';
 
 const settings = await getSiteSettings();
 const home = await getHomePage();
@@ -49,7 +50,12 @@ const home = await getHomePage();
   </div>
 
   <div class="prose">
-    <Signup title={home.signupTitle} actionLabel="Sign up" note={home.signupNote} />
+    <Signup
+      title={home.signupTitle}
+      actionLabel="Sign up"
+      note={home.signupNote}
+      endpoint={forms.mailing}
+    />
   </div>
 </PageLayout>
 )}

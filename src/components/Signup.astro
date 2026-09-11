@@ -4,7 +4,9 @@
  * an optional title, then a single boxless row (input + arrow action sharing one
  * ink bottom rule), then an optional muted note.
  *
- * The submit is inert until Phase 4 wires it to the mailing service.
+ * Submits to `endpoint` (mailing form service) with progressive enhancement via
+ * public/forms.js: native POST without JS, fetch + in-style success with JS.
+ * When no endpoint is configured, the form stays inert.
  */
 import Action from './Action.astro';
 
@@ -14,6 +16,9 @@ interface Props {
   actionLabel?: string;
   note?: string;
   name?: string;
+  /** Mailing form-service URL (from src/lib/forms.ts). */
+  endpoint?: string;
+  successText?: string;
 }
 
 const {
@@ -22,16 +27,29 @@ const {
   actionLabel = 'Sign up',
   note,
   name = 'contact',
+  endpoint,
+  successText = "You're on the list. See you at opening.",
 } = Astro.props;
 ---
 
-<div class="signup">
+<div class="signup" data-form>
   {title && <div class="signup__title">{title}</div>}
-  <form class="signup__row">
-    <input class="signup__input" type="text" name={name} placeholder={placeholder} />
+  <form
+    class="signup__row js-form"
+    method="post"
+    action={endpoint}
+    data-endpoint={endpoint}
+  >
+    <input class="signup__input" type="text" name={name} placeholder={placeholder} required />
     <Action label={actionLabel} as="submit" />
   </form>
-  {note && <div class="signup__note">{note}</div>}
+  {note && <div class="signup__note" data-note>{note}</div>}
+  <p class="signup__note form-msg" data-success role="status" aria-live="polite" hidden>
+    {successText}
+  </p>
+  <p class="signup__note form-msg form-msg--err" data-error role="alert" hidden>
+    That didn’t send — try again, or email us.
+  </p>
 </div>
 
 <style>

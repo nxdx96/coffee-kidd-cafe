@@ -10,6 +10,7 @@ import ChoiceGroup from '../components/ChoiceGroup.astro';
 import Action from '../components/Action.astro';
 import Photo from '../components/Photo.astro';
 import { getMailingListPage } from '../lib/content';
+import { forms } from '../lib/forms';
 
 const mailing = await getMailingListPage();
 const year = new Date().getFullYear();
@@ -23,24 +24,32 @@ const year = new Date().getFullYear();
     <p>{mailing.intro}</p>
   </div>
 
-  <form class="form">
-    <ChoiceGroup
-      label="Reach me by"
-      name="reachBy"
-      options={mailing.reachBy}
-      defaultSelected={mailing.reachBy[0]}
-    />
-    <Field label="First name" name="firstName" placeholder="so we can say hi properly" />
-    <Field label="Email" name="email" type="email" placeholder="you@somewhere.com" />
-    <ChoiceGroup
-      label="Mostly here for"
-      name="interests"
-      options={mailing.interests}
-      defaultSelected={mailing.interests[0]}
-      multiple
-    />
-    <Action label="Keep me in the loop" as="submit" />
-  </form>
+  <div class="form-wrap" data-form>
+    <form class="form js-form" method="post" action={forms.mailing} data-endpoint={forms.mailing}>
+      <ChoiceGroup
+        label="Reach me by"
+        name="reachBy"
+        options={mailing.reachBy}
+        defaultSelected={mailing.reachBy[0]}
+      />
+      <Field label="First name" name="firstName" placeholder="so we can say hi properly" />
+      <Field label="Email" name="email" type="email" placeholder="you@somewhere.com" required />
+      <ChoiceGroup
+        label="Mostly here for"
+        name="interests"
+        options={mailing.interests}
+        defaultSelected={mailing.interests[0]}
+        multiple
+      />
+      <Action label="Keep me in the loop" as="submit" />
+    </form>
+    <p class="form-msg" data-success role="status" aria-live="polite" hidden>
+      You're on the list. See you at opening.
+    </p>
+    <p class="form-msg form-msg--err" data-error role="alert" hidden>
+      That didn't send — try again in a moment.
+    </p>
+  </div>
 
   <div class="prose">
     <Photo {...mailing.photo} />

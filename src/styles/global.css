@@ -151,6 +151,17 @@ p {
   color: var(--muted);
 }
 
+/* Form confirmation / error lines (shown by public/forms.js). No accent color. */
+.form-msg {
+  max-width: var(--prose-max);
+}
+.form-msg[hidden] {
+  display: none;
+}
+.form-msg--err {
+  color: var(--muted);
+}
+
 /* Mobile: single column, nav reflowed to the end. ------------------------- */
 @media (max-width: 760px) {
   .page {

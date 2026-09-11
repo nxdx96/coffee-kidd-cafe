@@ -8,6 +8,7 @@ import Field from '../components/Field.astro';
 import ChoiceGroup from '../components/ChoiceGroup.astro';
 import Action from '../components/Action.astro';
 import { getSiteSettings, getContactPage } from '../lib/content';
+import { forms } from '../lib/forms';
 
 const settings = await getSiteSettings();
 const contact = await getContactPage();
@@ -32,18 +33,28 @@ const contact = await getContactPage();
     {contact.intro.slice(1).map((para) => <p class="muted">{para}</p>)}
   </div>
 
-  <form class="form">
-    <Field label="Name" name="name" placeholder="your name" />
-    <Field label="Email or phone" name="contact" placeholder="how do we reach you" />
-    <ChoiceGroup
-      label="About"
-      name="topic"
-      options={contact.topics}
-      defaultSelected={contact.topics[0]}
-    />
-    <Field label="Message" name="message" placeholder="tell us what's up" multiline />
-    <Action label="Send" as="submit" />
-  </form>
+  <div class="form-wrap" data-form>
+    <form class="form js-form" method="post" action={forms.contact} data-endpoint={forms.contact}>
+      <input type="hidden" name="_subject" value="Coffee Kidd — contact form" />
+      <Field label="Name" name="name" placeholder="your name" required />
+      <Field label="Email or phone" name="contact" placeholder="how do we reach you" required />
+      <ChoiceGroup
+        label="About"
+        name="topic"
+        options={contact.topics}
+        defaultSelected={contact.topics[0]}
+      />
+      <Field label="Message" name="message" placeholder="tell us what's up" multiline required />
+      <Action label="Send" as="submit" />
+    </form>
+    <p class="form-msg" data-success role="status" aria-live="polite" hidden>
+      Thanks — we read everything and reply when we're not on bar.
+    </p>
+    <p class="form-msg form-msg--err" data-error role="alert" hidden>
+      That didn't send. Email <a class="ul" href={`mailto:${settings.email}`}>{settings.email}</a> and
+      we'll sort it out.
+    </p>
+  </div>
 </PageLayout>
 
 <style>
