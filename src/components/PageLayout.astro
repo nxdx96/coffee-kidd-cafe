@@ -12,7 +12,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from './Nav.astro';
-import { site } from '../data/site';
+import { getSiteSettings } from '../lib/content';
 import type { NavKey } from '../data/site';
 
 interface Props {
@@ -25,6 +25,9 @@ interface Props {
 }
 
 const { title, description, current, trailing = 'instagram' } = Astro.props;
+
+const settings = await getSiteSettings();
+const year = new Date().getFullYear();
 ---
 
 <BaseLayout title={title} description={description}>
@@ -34,13 +37,15 @@ const { title, description, current, trailing = 'instagram' } = Astro.props;
         <div class="page__wordmark">Coffee Kidd Cafe</div>
         <div class="page__info"><slot name="info" /></div>
       </div>
-      <nav class="page__nav"><Nav current={current} trailing={trailing} /></nav>
+      <nav class="page__nav">
+        <Nav current={current} trailing={trailing} instagram={settings.instagram} />
+      </nav>
     </div>
 
     <div class="page__right">
       <div class="page__content"><slot /></div>
       <footer class="page__footer">
-        <slot name="footer">{site.email} · {site.copyright}</slot>
+        <slot name="footer">{settings.email} · © {year}</slot>
       </footer>
     </div>
   </main>

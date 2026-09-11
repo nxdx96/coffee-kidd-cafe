@@ -6,15 +6,17 @@
  * render as plain muted text, not links. A trailing item links out to Instagram
  * on most pages, or is the internal Contact link on the contact page.
  */
-import { navItems, site } from '../data/site';
+import { navItems } from '../data/site';
 import type { NavKey } from '../data/site';
 
 interface Props {
   current: NavKey;
   trailing?: 'instagram' | 'contact';
+  /** Instagram URL (from Site settings) for the trailing link. */
+  instagram?: string;
 }
 
-const { current, trailing = 'instagram' } = Astro.props;
+const { current, trailing = 'instagram', instagram = '#' } = Astro.props;
 
 const items = [...navItems];
 if (trailing === 'contact') {
@@ -44,7 +46,7 @@ if (trailing === 'contact') {
     trailing === 'instagram' && (
       <>
         <span class="nav__sep">|</span>
-        <a class="nav__link" href={site.instagram}>
+        <a class="nav__link" href={instagram}>
           Instagram
         </a>
       </>

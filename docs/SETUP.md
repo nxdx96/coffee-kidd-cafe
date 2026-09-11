@@ -42,18 +42,27 @@ docs/                        # discovery notes
 > Vercel works the same way if preferred (Import project → framework auto-detected as Astro →
 > deploy). Only one host is needed.
 
-## Content editing (Sanity) — set up in Phase 2, account created now
+## Content editing (Sanity)
 
-The founders' editing tool. Creating the project needs a login, so do this once:
+The editing app and content model are **built** (in [`studio/`](../studio/), plus the site's
+content layer in `src/lib/`). What's left needs a login, so do it once:
 
 1. Log in at https://sanity.io with the `coffeekiddcafe@gmail.com` Google account.
-2. Create a new project named **Coffee Kidd Cafe**; note the **Project ID** and dataset (`production`).
-3. In **Members**, invite both founders (Natalia + Zach) as editors with their Google logins.
-4. Hand the Project ID to the developer — it goes in a `.env` file (never committed) and wires the
-   site to the CMS in Phase 2. The editing app ("Studio") is then published to
-   `coffeekiddcafe.com/studio`.
+2. Create a project named **Coffee Kidd Cafe**; note the **Project ID** (dataset `production`).
+3. In **Members**, invite both founders (Natalia + Zach) as editors.
+4. Follow [`studio/README.md`](../studio/README.md) to seed the starting copy and deploy the Studio
+   (`npm run seed`, `npm run deploy`).
+5. Point the **site** at the project: copy `.env.example` → `.env` in the repo root and set
+   `SANITY_PROJECT_ID`, then redeploy.
 
-Until Phase 2, the site reads the copy already baked into the mockups, so nothing is blocked.
+Until step 5 is done, the site renders the built-in fallback copy (identical to the mockups), so
+nothing is blocked — the CMS just isn't the source yet.
+
+### How the content layer works
+- `src/data/fallback.ts` — the mockup copy, baked in.
+- `src/lib/sanity.ts` — creates the client only when `SANITY_PROJECT_ID` is set (else `null`).
+- `src/lib/content.ts` — getters that return live Sanity data when available, merged over the
+  fallback so a blank CMS field never blanks a page. Pages import only from here.
 
 ## Notes
 - Secrets (Sanity token, form service keys) live in `.env` locally and in the host's environment

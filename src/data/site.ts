@@ -1,17 +1,10 @@
 /**
- * Site-wide constants and navigation.
+ * Navigation structure.
  *
- * Phase 1 placeholder: these values are hard-coded from the mockups today. In
- * Phase 2 they move into Sanity (Site settings) so the founders edit them
- * themselves — the shape here mirrors the planned content model.
+ * The nav's shape is static (defined here); the editable values it pairs with —
+ * email, Instagram/TikTok URLs, etc. — come from the content layer
+ * (`src/lib/content.ts` → Site settings in Sanity).
  */
-
-export const site = {
-  email: 'coffeekiddcafe@gmail.com',
-  instagram: 'https://instagram.com/',
-  tiktok: 'https://tiktok.com/',
-  copyright: '© 2026',
-} as const;
 
 export type NavKey = 'home' | 'story' | 'menu' | 'events' | 'mailing' | 'contact';
 
