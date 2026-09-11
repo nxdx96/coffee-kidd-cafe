@@ -1,0 +1,100 @@
+---
+/**
+ * Events (/events) — designed in the 7a style (no mockup existed). Upcoming
+ * events first, then past. Quiet empty state until the founders add one.
+ */
+import PageLayout from '../components/PageLayout.astro';
+import Photo from '../components/Photo.astro';
+import { getEvents } from '../lib/content';
+import type { CafeEvent } from '../types/content';
+
+const events = await getEvents();
+const today = new Date().toISOString().slice(0, 10);
+
+const upcoming = events
+  .filter((e) => e.date >= today)
+  .sort((a, b) => a.date.localeCompare(b.date));
+const past = events.filter((e) => e.date < today).sort((a, b) => b.date.localeCompare(a.date));
+
+function formatDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+---
+
+<PageLayout title="Coffee Kidd Cafe — Events" current="events">
+  <p slot="info">Events</p>
+  <p slot="info" class="muted">
+    Art shows, food drives, hosting local artists, the occasional late night. An open space for the
+    community.
+  </p>
+
+  {
+    events.length === 0 ? (
+      <div class="prose">
+        <p>Nothing on the calendar yet.</p>
+        <p class="muted">
+          Art shows, food drives and late nights are coming. <a class="ul" href="/mailing-list">Join
+          the mailing list</a> to hear first.
+        </p>
+      </div>
+    ) : (
+      <>
+        {upcoming.map((event: CafeEvent) => (
+          <div class="event">
+            <div class="event__date muted">{formatDate(event.date)}</div>
+            <p class="event__title">{event.title}</p>
+            {event.description && <p class="muted">{event.description}</p>}
+            {event.photo && (
+              <div class="event__photo">
+                <Photo {...event.photo} />
+              </div>
+            )}
+          </div>
+        ))}
+
+        {past.length > 0 && (
+          <div class="prose">
+            <p class="past-title muted">Past</p>
+            {past.map((event: CafeEvent) => (
+              <div class="event event--past">
+                <div class="event__date muted">{formatDate(event.date)}</div>
+                <p class="event__title">{event.title}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </>
+    )
+  }
+</PageLayout>
+
+<style>
+  .event {
+    max-width: var(--prose-max);
+  }
+  .event__date {
+    font-size: var(--size-small);
+    margin-bottom: 2px;
+  }
+  .event__title {
+    margin-bottom: 4px;
+  }
+  .event__photo {
+    margin-top: 14px;
+  }
+  .event--past {
+    margin-top: 16px;
+  }
+  .past-title {
+    margin-bottom: 10px;
+  }
+  .ul {
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+  }
+  .ul:hover {
+    border-bottom-color: var(--muted);
+  }
+</style>

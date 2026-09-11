@@ -27,7 +27,9 @@ export const siteSettings: SiteSettings = {
   email: 'coffeekiddcafe@gmail.com',
   instagram: 'https://instagram.com/',
   tiktok: 'https://tiktok.com/',
-  preLaunch: false,
+  // Launch in pre-launch mode: "/" shows Coming-soon until the founders flip
+  // this off in Site settings on opening day. Matches studio/seed.ndjson.
+  preLaunch: true,
 };
 
 export const homePage: HomePage = {
@@ -45,7 +47,8 @@ export const homePage: HomePage = {
 };
 
 export const storyPage: StoryPage = {
-  info: ['Natalia Amaya', 'Zachary Kidd', 'Jersey City, NJ', 'Inclusive. Eclectic. Curated.'],
+  identity: ['Natalia Amaya', 'Zachary Kidd', 'Jersey City, NJ'],
+  words: 'Inclusive. Eclectic. Curated.',
   body: [
     "Coffee Kidd was born from the friendship of two inseparable best friends, Natalia Amaya and Zachary Kidd, who spent the past three years working side by side and dreaming up something of their own. Natalia, a lifelong Jersey City resident, and Zach, who dropped into Jersey City all the way from Idaho, bring a combined 20 years of hospitality experience to the shop. Zach as an experienced barista and Natalia as a seasoned server.",
     'After years of working in hospitality, they knew exactly what they wanted to create: a warm, welcoming neighborhood space centered around great coffee, genuine connection, and community. Coffee Kidd is their take on the perfect third space, a place to meet, create, and unwind.',

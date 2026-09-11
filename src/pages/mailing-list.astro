@@ -1,0 +1,59 @@
+---
+/**
+ * Mailing list (/mailing-list) — signup with reach-by + interests choices and a
+ * photo. Built from ui-mockups/mailing-list.html. Inert until Phase 4 wires the
+ * mailing service.
+ */
+import PageLayout from '../components/PageLayout.astro';
+import Field from '../components/Field.astro';
+import ChoiceGroup from '../components/ChoiceGroup.astro';
+import Action from '../components/Action.astro';
+import Photo from '../components/Photo.astro';
+import { getMailingListPage } from '../lib/content';
+
+const mailing = await getMailingListPage();
+const year = new Date().getFullYear();
+---
+
+<PageLayout title="Coffee Kidd Cafe — Mailing list" current="mailing">
+  <p slot="info">Mailing list</p>
+  {mailing.sidebarNotes.map((note) => <p slot="info" class="muted">{note}</p>)}
+
+  <div class="prose">
+    <p>{mailing.intro}</p>
+  </div>
+
+  <form class="form">
+    <ChoiceGroup
+      label="Reach me by"
+      name="reachBy"
+      options={mailing.reachBy}
+      defaultSelected={mailing.reachBy[0]}
+    />
+    <Field label="First name" name="firstName" placeholder="so we can say hi properly" />
+    <Field label="Email" name="email" type="email" placeholder="you@somewhere.com" />
+    <ChoiceGroup
+      label="Mostly here for"
+      name="interests"
+      options={mailing.interests}
+      defaultSelected={mailing.interests[0]}
+      multiple
+    />
+    <Action label="Keep me in the loop" as="submit" />
+  </form>
+
+  <div class="prose">
+    <Photo {...mailing.photo} />
+  </div>
+
+  <span slot="footer">{mailing.footerNote} · © {year}</span>
+</PageLayout>
+
+<style>
+  .form {
+    max-width: var(--prose-max);
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+</style>

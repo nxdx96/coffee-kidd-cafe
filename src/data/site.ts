@@ -12,18 +12,17 @@ export interface NavItem {
   key: NavKey;
   label: string;
   href: string;
-  /** Rendered as muted, non-link text (e.g. "Menu, soon" until items exist). */
-  muted?: boolean;
 }
 
 /**
- * The primary nav. "Menu, soon" stays muted and unlinked until the founders
- * publish menu items (flip `muted` off in Phase 3/CMS).
+ * The primary nav. The Menu item is special-cased in Nav.astro: it shows as a
+ * muted, unlinked "Menu, soon" until the founders publish menu items, then
+ * becomes a normal "Menu" link.
  */
 export const navItems: NavItem[] = [
   { key: 'home', label: 'Home', href: '/' },
   { key: 'story', label: 'Story', href: '/story' },
-  { key: 'menu', label: 'Menu, soon', href: '/menu', muted: true },
+  { key: 'menu', label: 'Menu', href: '/menu' },
   { key: 'events', label: 'Events', href: '/events' },
   { key: 'mailing', label: 'Mailing list', href: '/mailing-list' },
 ];

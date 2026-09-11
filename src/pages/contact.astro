@@ -1,0 +1,63 @@
+---
+/**
+ * Contact (/contact) — intro copy + a contact form. Built from
+ * ui-mockups/contact.html. The form is inert until Phase 4 wires the email service.
+ */
+import PageLayout from '../components/PageLayout.astro';
+import Field from '../components/Field.astro';
+import ChoiceGroup from '../components/ChoiceGroup.astro';
+import Action from '../components/Action.astro';
+import { getSiteSettings, getContactPage } from '../lib/content';
+
+const settings = await getSiteSettings();
+const contact = await getContactPage();
+---
+
+<PageLayout title="Coffee Kidd Cafe — Contact" current="contact" trailing="contact">
+  <p slot="info">Contact</p>
+  <p slot="info">
+    <a class="ul" href={`mailto:${settings.email}`}>{settings.email}</a>
+  </p>
+  <p slot="info">
+    {settings.addressLines.map((line, i) => (<>{i > 0 && <br />}{line}</>))}
+    {settings.addressNote && (<><br /><span class="muted">{settings.addressNote}</span></>)}
+  </p>
+  <p slot="info">
+    <a href={settings.instagram}>Instagram</a><br />
+    <a href={settings.tiktok}>TikTok</a>
+  </p>
+
+  <div class="prose">
+    <p>{contact.intro[0]}</p>
+    {contact.intro.slice(1).map((para) => <p class="muted">{para}</p>)}
+  </div>
+
+  <form class="form">
+    <Field label="Name" name="name" placeholder="your name" />
+    <Field label="Email or phone" name="contact" placeholder="how do we reach you" />
+    <ChoiceGroup
+      label="About"
+      name="topic"
+      options={contact.topics}
+      defaultSelected={contact.topics[0]}
+    />
+    <Field label="Message" name="message" placeholder="tell us what's up" multiline />
+    <Action label="Send" as="submit" />
+  </form>
+</PageLayout>
+
+<style>
+  .form {
+    max-width: var(--prose-max);
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+  .ul {
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+  }
+  .ul:hover {
+    border-bottom-color: var(--muted);
+  }
+</style>

@@ -7,10 +7,15 @@ export const storyPage = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'info',
-      title: 'Left-column lines (names, city, three words)',
+      name: 'identity',
+      title: 'Left-column lines (names, city)',
       type: 'array',
       of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'words',
+      title: 'Three words (e.g. “Inclusive. Eclectic. Curated.”)',
+      type: 'string',
     }),
     defineField({
       name: 'body',

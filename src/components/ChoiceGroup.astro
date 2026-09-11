@@ -1,0 +1,84 @@
+---
+/**
+ * ChoiceGroup — the `|`-separated selectable text links used for choices
+ * (contact "About", mailing "Reach me by" and "Mostly here for"). Rendered as
+ * real radio/checkbox inputs (accessible, form-ready) but styled as plain text
+ * links; the selected option gets the ink underline. No boxes.
+ */
+interface Props {
+  /** Field label above the choices. */
+  label?: string;
+  name: string;
+  options: string[];
+  /** true → checkboxes (multi-select); false → radios (single-select). */
+  multiple?: boolean;
+  /** Option(s) selected by default. */
+  defaultSelected?: string | string[];
+}
+
+const { label, name, options, multiple = false, defaultSelected } = Astro.props;
+
+const selected = new Set(
+  Array.isArray(defaultSelected) ? defaultSelected : defaultSelected ? [defaultSelected] : [],
+);
+const type = multiple ? 'checkbox' : 'radio';
+---
+
+<div class="choice">
+  {label && <div class="choice__label">{label}</div>}
+  <div class="choice__opts">
+    {
+      options.map((opt, i) => (
+        <>
+          {i > 0 && <span class="choice__sep">|</span>}
+          <label class="choice__opt">
+            <input
+              class="choice__input"
+              type={type}
+              name={multiple ? `${name}[]` : name}
+              value={opt}
+              checked={selected.has(opt)}
+            />
+            <span class="choice__text">{opt}</span>
+          </label>
+        </>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .choice__label {
+    font-size: var(--size-small);
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .choice__opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 8px;
+  }
+  .choice__opt {
+    cursor: inherit;
+  }
+  /* Keep the input accessible/focusable but visually replaced by the text. */
+  .choice__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .choice__text {
+    border-bottom: 1px solid transparent;
+  }
+  .choice__input:checked + .choice__text {
+    border-bottom-color: var(--ink);
+  }
+  .choice__opt:hover .choice__text {
+    color: var(--muted);
+  }
+  .choice__input:focus-visible + .choice__text {
+    outline: 1px dotted var(--muted);
+    outline-offset: 3px;
+  }
+</style>
