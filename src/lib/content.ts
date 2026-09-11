@@ -61,7 +61,7 @@ export async function getStoryPage(): Promise<StoryPage> {
   if (!sanityClient) return fallback.storyPage;
   const doc = await sanityClient.fetch<Partial<StoryPage>>(
     `*[_type == "storyPage"][0]{
-      info, body, intoTitle, intoText,
+      identity, words, body, intoTitle, intoText,
       portraits[]${photoProjection}
     }`,
   );

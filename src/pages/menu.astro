@@ -1,0 +1,94 @@
+---
+/**
+ * Menu (/menu) — designed in the 7a style (no mockup existed). Items are grouped
+ * by section, sorted by the founders' order. Until the first item is published,
+ * a quiet empty state shows and the nav keeps "Menu, soon".
+ */
+import PageLayout from '../components/PageLayout.astro';
+import { getMenuItems } from '../lib/content';
+import type { MenuItem } from '../types/content';
+
+const items = await getMenuItems();
+
+// Group by section, preserving the order items first appear in.
+const sections: { name: string; items: MenuItem[] }[] = [];
+for (const item of items) {
+  const key = item.section || 'Menu';
+  let group = sections.find((s) => s.name === key);
+  if (!group) {
+    group = { name: key, items: [] };
+    sections.push(group);
+  }
+  group.items.push(item);
+}
+---
+
+<PageLayout title="Coffee Kidd Cafe — Menu" current="menu">
+  <p slot="info">Menu</p>
+  <p slot="info" class="muted">
+    Premium, ethically sourced tea, coffee and matcha. Baked goods from local bakers. Seasonal, but
+    not crazy.
+  </p>
+
+  {
+    items.length === 0 ? (
+      <div class="prose">
+        <p>The menu is still coming together.</p>
+        <p class="muted">
+          We're sorting out drinks and local bakers. <a class="ul" href="/mailing-list">Join the
+          mailing list</a> and we'll say when it's ready.
+        </p>
+      </div>
+    ) : (
+      sections.map((section) => (
+        <div class="section">
+          <p class="section__title">{section.name}</p>
+          <div class="section__items">
+            {section.items.map((item) => (
+              <div class="item">
+                <div class="item__head">
+                  <span class="item__name">
+                    {item.name}
+                    {item.seasonal && <span class="muted"> · seasonal</span>}
+                  </span>
+                  {item.price && <span class="item__price">{item.price}</span>}
+                </div>
+                {item.description && <div class="item__desc muted">{item.description}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    )
+  }
+</PageLayout>
+
+<style>
+  .section {
+    max-width: var(--prose-max);
+  }
+  .section__title {
+    margin-bottom: 14px;
+  }
+  .section__items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .item__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: baseline;
+  }
+  .item__desc {
+    margin-top: 2px;
+  }
+  .ul {
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+  }
+  .ul:hover {
+    border-bottom-color: var(--muted);
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+/**
+ * ComingSoon — the pre-launch homepage (ui-mockups/coming-soon.html). Shown at
+ * "/" while Site settings → "Pre-launch mode" is ON. A short two-column layout:
+ * info + notify signup on the left, one full-height photo on the right.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Signup from './Signup.astro';
+import { getSiteSettings } from '../lib/content';
+
+const settings = await getSiteSettings();
+---
+
+<BaseLayout title="Coffee Kidd Cafe — Opening soon">
+  <main class="cs">
+    <div class="cs__left">
+      <div class="cs__top">
+        <div class="cs__wordmark">Coffee Kidd Cafe</div>
+        <p class="cs__p">{settings.openingLine}</p>
+        <p class="cs__p">
+          {settings.addressLines.map((line, i) => (<>{i > 0 && <br />}{line}</>))}
+        </p>
+        <p class="cs__p muted">{settings.tagline}</p>
+        <div class="cs__signup">
+          <Signup placeholder="email or phone number" actionLabel="Notify me" />
+        </div>
+      </div>
+      <nav class="cs__nav">
+        <a href="/story">Story</a><span>|</span>
+        <a href={settings.instagram}>Instagram</a><span>|</span>
+        <a href={settings.tiktok}>TikTok</a><span>|</span>
+        <a href={`mailto:${settings.email}`}>{settings.email}</a>
+      </nav>
+    </div>
+
+    <div class="cs__right">
+      <div class="cs__photo photo-placeholder">photo: the room, before we moved in</div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .cs {
+    max-width: var(--page-max);
+    min-height: 760px;
+    margin: 0 auto;
+    padding: var(--pad-desktop);
+    display: grid;
+    grid-template-columns: var(--col-left) 1fr;
+    column-gap: var(--col-gap);
+  }
+  .cs__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cs__wordmark {
+    font-family: var(--font-wordmark);
+    font-size: var(--size-wordmark);
+    line-height: 1;
+    margin-bottom: 34px;
+  }
+  .cs__p {
+    margin: 0 0 22px;
+  }
+  .cs__signup {
+    margin-top: 10px;
+  }
+  .cs__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 8px;
+  }
+  .cs__nav a {
+    text-decoration: none;
+  }
+  .cs__right {
+    display: flex;
+  }
+  .cs__photo {
+    flex: 1;
+    min-height: 100%;
+  }
+
+  @media (max-width: 760px) {
+    .cs {
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+      max-width: 430px;
+      padding: var(--pad-mobile);
+    }
+    .cs__wordmark {
+      font-size: 24px;
+      margin-bottom: 26px;
+    }
+    .cs__p {
+      margin: 0 0 18px;
+    }
+    .cs__right {
+      flex: 1;
+      margin: 26px 0;
+      min-height: 220px;
+    }
+    .cs__nav {
+      margin-top: auto;
+    }
+  }
+</style>

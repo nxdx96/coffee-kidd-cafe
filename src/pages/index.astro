@@ -1,18 +1,20 @@
 ---
 /**
- * Home — copy and photo now come from the content layer (Sanity when configured,
- * fallback copy otherwise). Phase 3 adds the pre-launch toggle to swap this for
- * the Coming-soon layout when `settings.preLaunch` is on.
+ * Home ("/") — shows the Coming-soon layout while Site settings → "Pre-launch
+ * mode" is ON, otherwise the full Home. Copy and photo come from the content
+ * layer (Sanity when configured, fallback copy otherwise).
  */
 import PageLayout from '../components/PageLayout.astro';
 import Photo from '../components/Photo.astro';
 import Signup from '../components/Signup.astro';
+import ComingSoon from '../components/ComingSoon.astro';
 import { getSiteSettings, getHomePage } from '../lib/content';
 
 const settings = await getSiteSettings();
 const home = await getHomePage();
 ---
 
+{settings.preLaunch ? <ComingSoon /> : (
 <PageLayout title="Coffee Kidd Cafe — Home" current="home">
   <p slot="info">{settings.tagline}</p>
 
@@ -50,6 +52,7 @@ const home = await getHomePage();
     <Signup title={home.signupTitle} actionLabel="Sign up" note={home.signupNote} />
   </div>
 </PageLayout>
+)}
 
 <style>
   .ink {

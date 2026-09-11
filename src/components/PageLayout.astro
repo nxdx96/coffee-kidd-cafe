@@ -12,7 +12,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from './Nav.astro';
-import { getSiteSettings } from '../lib/content';
+import { getSiteSettings, getMenuItems } from '../lib/content';
 import type { NavKey } from '../data/site';
 
 interface Props {
@@ -27,6 +27,7 @@ interface Props {
 const { title, description, current, trailing = 'instagram' } = Astro.props;
 
 const settings = await getSiteSettings();
+const menuActive = (await getMenuItems()).length > 0;
 const year = new Date().getFullYear();
 ---
 
@@ -38,7 +39,12 @@ const year = new Date().getFullYear();
         <div class="page__info"><slot name="info" /></div>
       </div>
       <nav class="page__nav">
-        <Nav current={current} trailing={trailing} instagram={settings.instagram} />
+        <Nav
+          current={current}
+          trailing={trailing}
+          instagram={settings.instagram}
+          menuActive={menuActive}
+        />
       </nav>
     </div>
 

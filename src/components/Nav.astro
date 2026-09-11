@@ -14,9 +14,11 @@ interface Props {
   trailing?: 'instagram' | 'contact';
   /** Instagram URL (from Site settings) for the trailing link. */
   instagram?: string;
+  /** When false, Menu shows as muted "Menu, soon" instead of a link. */
+  menuActive?: boolean;
 }
 
-const { current, trailing = 'instagram', instagram = '#' } = Astro.props;
+const { current, trailing = 'instagram', instagram = '#', menuActive = false } = Astro.props;
 
 const items = [...navItems];
 if (trailing === 'contact') {
@@ -29,8 +31,8 @@ if (trailing === 'contact') {
     items.map((item, i) => (
       <>
         {i > 0 && <span class="nav__sep">|</span>}
-        {item.muted ? (
-          <span class="nav__muted">{item.label}</span>
+        {item.key === 'menu' && !menuActive ? (
+          <span class="nav__muted">Menu, soon</span>
         ) : (
           <a
             href={item.href}

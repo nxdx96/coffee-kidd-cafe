@@ -44,7 +44,10 @@ export interface HomePage {
 }
 
 export interface StoryPage {
-  info: string[];
+  /** Left-column identity lines (names, city) shown as one muted block. */
+  identity: string[];
+  /** The three words, e.g. "Inclusive. Eclectic. Curated." */
+  words: string;
   body: string[];
   portraits: PhotoContent[];
   intoTitle: string;
