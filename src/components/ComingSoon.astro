@@ -7,6 +7,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Signup from './Signup.astro';
 import { getSiteSettings } from '../lib/content';
+import { forms } from '../lib/forms';
 
 const settings = await getSiteSettings();
 ---
@@ -22,7 +23,7 @@ const settings = await getSiteSettings();
         </p>
         <p class="cs__p muted">{settings.tagline}</p>
         <div class="cs__signup">
-          <Signup placeholder="email or phone number" actionLabel="Notify me" />
+          <Signup placeholder="email or phone number" actionLabel="Notify me" endpoint={forms.mailing} />
         </div>
       </div>
       <nav class="cs__nav">

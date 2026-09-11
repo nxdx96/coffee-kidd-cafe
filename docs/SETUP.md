@@ -64,6 +64,32 @@ nothing is blocked — the CMS just isn't the source yet.
 - `src/lib/content.ts` — getters that return live Sanity data when available, merged over the
   fallback so a blank CMS field never blanks a page. Pages import only from here.
 
+## Forms (mailing list + contact)
+
+The mailing-list, contact, and homepage signup forms are **built and wired**. They submit to a
+form service you choose; until an endpoint is set they stay inert (no submit), so the design is
+unchanged and nothing breaks.
+
+1. Pick a service that accepts a POST of form fields and returns 2xx — e.g.
+   [Formspree](https://formspree.io), [Web3Forms](https://web3forms.com), or a newsletter tool's
+   embed form ([Buttondown](https://buttondown.email), Mailchimp).
+   - **Contact** → a form-to-email service (Formspree is simplest; delivers to
+     `coffeekiddcafe@gmail.com`).
+   - **Mailing list / signups** → the newsletter tool where the founders will actually send emails,
+     or Formspree to start and export later.
+2. Create each form there and copy its POST URL.
+3. Set the endpoints (repo root `.env`, and the host's env settings for production):
+   ```
+   PUBLIC_CONTACT_ENDPOINT=https://formspree.io/f/your-id
+   PUBLIC_MAILING_ENDPOINT=https://your-newsletter-or-formspree-url
+   ```
+4. Redeploy. With JavaScript, submitting shows an in-style confirmation without leaving the page;
+   without JS it falls back to a normal POST.
+
+Subscribers/messages live in the chosen service — the founders manage them there, no database here.
+
 ## Notes
 - Secrets (Sanity token, form service keys) live in `.env` locally and in the host's environment
   variable settings — never commit them. `.gitignore` already excludes `.env`.
+- `PUBLIC_`-prefixed vars (form endpoints) are visible in the page source by design — use a service
+  where the POST URL is safe to expose (Formspree, Web3Forms, and newsletter embeds all are).
