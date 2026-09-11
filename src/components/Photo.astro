@@ -1,0 +1,53 @@
+---
+/**
+ * Photo — a single image block. 4:3 for rooms, 3:4 for portraits. No radius,
+ * no border; caption is 13px muted, 8px below.
+ *
+ * Until a real `src` is uploaded (via the CMS in Phase 2), it renders the
+ * striped placeholder with the shot description, matching the mockups.
+ */
+interface Props {
+  /** Aspect ratio, e.g. "4 / 3" (rooms) or "3 / 4" (portraits). */
+  ratio?: string;
+  /** Uploaded image URL. When absent, the striped placeholder shows. */
+  src?: string;
+  alt?: string;
+  /** Placeholder note shown before a real photo exists, e.g. "photo: Natalia". */
+  placeholder?: string;
+  caption?: string;
+}
+
+const { ratio = '4 / 3', src, alt = '', placeholder = 'photo', caption } = Astro.props;
+---
+
+<figure class="photo">
+  {
+    src ? (
+      <img class="photo__img" src={src} alt={alt} style={`aspect-ratio:${ratio}`} />
+    ) : (
+      <div class="photo-placeholder photo__ph" style={`aspect-ratio:${ratio}`}>
+        {placeholder}
+      </div>
+    )
+  }
+  {caption && <figcaption class="photo__cap">{caption}</figcaption>}
+</figure>
+
+<style>
+  .photo {
+    margin: 0;
+  }
+  .photo__img,
+  .photo__ph {
+    width: 100%;
+    display: block;
+  }
+  .photo__img {
+    object-fit: cover;
+  }
+  .photo__cap {
+    font-size: var(--size-small);
+    color: var(--muted);
+    margin-top: 8px;
+  }
+</style>

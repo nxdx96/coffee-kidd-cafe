@@ -80,3 +80,115 @@ p {
   color: var(--muted);
   text-align: center;
 }
+
+/* ---------------------------------------------------------------------------
+   Page frame — the two-column "paper" layout (7a).
+   Desktop: 300px info column | 1fr content column, gap 60px, min-height 1100px
+   so the nav pins to the bottom of the left column and the footer to the bottom
+   of the right column. Collapses to a single column below 760px, reflowing the
+   nav to the end via `display: contents` + `order`.
+   --------------------------------------------------------------------------- */
+.page {
+  max-width: var(--page-max);
+  min-height: 1100px;
+  margin: 0 auto;
+  padding: var(--pad-desktop);
+  display: grid;
+  grid-template-columns: var(--col-left) 1fr;
+  column-gap: var(--col-gap);
+}
+
+/* Left column: wordmark + info at top, nav pinned to the bottom. */
+.page__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 1020px;
+}
+
+.page__wordmark {
+  font-family: var(--font-wordmark);
+  font-size: var(--size-wordmark);
+  line-height: 1;
+  margin-bottom: 34px;
+}
+
+/* Info paragraphs sit 22px apart (from the mockup). */
+.page__info > p {
+  margin: 0 0 22px;
+}
+
+/* Right column: content blocks 40px apart, footer pushed to the bottom. */
+.page__right {
+  display: flex;
+  flex-direction: column;
+}
+
+.page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.page__footer {
+  font-size: var(--size-small);
+  color: var(--muted);
+  margin-top: auto;
+  padding-top: 40px;
+}
+
+/* Content width utilities (from the mockup: prose 560, media grid 760). */
+.prose {
+  max-width: var(--prose-max);
+}
+.prose > p + p {
+  margin-top: 16px;
+}
+.media {
+  max-width: var(--grid-max);
+}
+.muted {
+  color: var(--muted);
+}
+
+/* Mobile: single column, nav reflowed to the end. ------------------------- */
+@media (max-width: 760px) {
+  .page {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-width: 430px;
+    padding: var(--pad-mobile);
+  }
+  /* Unwrap the column boxes so their children order in the single flex flow. */
+  .page__left,
+  .page__right {
+    display: contents;
+  }
+  .page__top {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .page__content {
+    order: 2;
+    gap: 26px;
+    margin-top: 26px;
+  }
+  .page__nav {
+    order: 3;
+    margin-top: 30px;
+  }
+  .page__footer {
+    order: 4;
+    margin-top: 26px;
+    padding-top: 0;
+  }
+  .page__wordmark {
+    font-size: var(--size-wordmark-mobile, 24px);
+    margin-bottom: 26px;
+  }
+  .page__info > p {
+    margin: 0 0 18px;
+  }
+}

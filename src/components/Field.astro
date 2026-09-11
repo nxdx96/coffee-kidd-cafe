@@ -1,0 +1,77 @@
+---
+/**
+ * Field — a boxless form field. Label (13px muted), then a real input/textarea
+ * with a 1px ink bottom rule and 8px padding; placeholder in the muted grey.
+ * No boxes anywhere (per the design system).
+ */
+interface Props {
+  label: string;
+  name: string;
+  placeholder?: string;
+  type?: string;
+  multiline?: boolean;
+  required?: boolean;
+}
+
+const {
+  label,
+  name,
+  placeholder = '',
+  type = 'text',
+  multiline = false,
+  required = false,
+} = Astro.props;
+
+const id = `field-${name}`;
+---
+
+<div class="field">
+  <label class="field__label" for={id}>{label}</label>
+  {
+    multiline ? (
+      <textarea
+        id={id}
+        name={name}
+        class="field__input field__input--area"
+        placeholder={placeholder}
+        required={required}
+        rows="3"
+      />
+    ) : (
+      <input
+        id={id}
+        name={name}
+        type={type}
+        class="field__input"
+        placeholder={placeholder}
+        required={required}
+      />
+    )
+  }
+</div>
+
+<style>
+  .field__label {
+    display: block;
+    font-size: var(--size-small);
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .field__input {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    padding: 0 0 8px;
+    outline: none;
+  }
+  .field__input--area {
+    min-height: 90px;
+    resize: vertical;
+  }
+  .field__input::placeholder {
+    color: var(--placeholder);
+  }
+</style>

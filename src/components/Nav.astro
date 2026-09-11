@@ -1,0 +1,71 @@
+---
+/**
+ * Nav — the `|`-separated text-link navigation.
+ *
+ * The current page gets a 1px ink underline. Muted items (e.g. "Menu, soon")
+ * render as plain muted text, not links. A trailing item links out to Instagram
+ * on most pages, or is the internal Contact link on the contact page.
+ */
+import { navItems, site } from '../data/site';
+import type { NavKey } from '../data/site';
+
+interface Props {
+  current: NavKey;
+  trailing?: 'instagram' | 'contact';
+}
+
+const { current, trailing = 'instagram' } = Astro.props;
+
+const items = [...navItems];
+if (trailing === 'contact') {
+  items.push({ key: 'contact', label: 'Contact', href: '/contact' });
+}
+---
+
+<div class="nav">
+  {
+    items.map((item, i) => (
+      <>
+        {i > 0 && <span class="nav__sep">|</span>}
+        {item.muted ? (
+          <span class="nav__muted">{item.label}</span>
+        ) : (
+          <a
+            href={item.href}
+            class:list={['nav__link', { 'nav__link--current': item.key === current }]}
+          >
+            {item.label}
+          </a>
+        )}
+      </>
+    ))
+  }
+  {
+    trailing === 'instagram' && (
+      <>
+        <span class="nav__sep">|</span>
+        <a class="nav__link" href={site.instagram}>
+          Instagram
+        </a>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 8px;
+    color: var(--ink);
+  }
+  .nav__link {
+    text-decoration: none;
+  }
+  .nav__link--current {
+    border-bottom: 1px solid var(--ink);
+  }
+  .nav__muted {
+    color: var(--muted);
+  }
+</style>
