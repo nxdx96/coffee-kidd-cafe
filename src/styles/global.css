@@ -1,0 +1,82 @@
+/*
+  Coffee Kidd Cafe — global styles & design tokens.
+  Source of truth: ui-mockups/README.md ("7a — Plain page, paper").
+  Text-first, mostly blank page. No accent color. Hierarchy via color + whitespace only.
+*/
+
+:root {
+  /* Colors */
+  --paper: #f4f2ed;        /* page background */
+  --ink: #1c1b1a;          /* text, rules, active link underline */
+  --muted: #77736c;        /* secondary text, captions, footer */
+  --placeholder: #a5a19a;  /* placeholder text in fields */
+  --photo-a: #e6e3dc;      /* photo placeholder stripes (replace with real photos) */
+  --photo-b: #dedbd3;
+
+  /* Type */
+  --font-wordmark: 'Grenze Gotisch', serif; /* the only gothic element */
+  --font-body: 'Shippori Mincho', serif;
+  --size-body: 15px;
+  --size-small: 13px;      /* captions, footer */
+  --size-wordmark: 26px;   /* 24px on mobile */
+  --line: 1.7;
+
+  /* Spacing */
+  --page-max: 1200px;
+  --col-left: 300px;
+  --col-gap: 60px;
+  --pad-desktop: 36px 40px;
+  --pad-mobile: 28px 22px 32px;
+  --prose-max: 560px;
+  --grid-max: 760px;
+
+  /* Breakpoint: collapse to mobile layout below this. */
+  --bp: 760px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: var(--line);
+}
+
+/* No bold, no uppercase, no letterspacing anywhere. */
+body {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: var(--muted);
+}
+
+p {
+  margin: 0;
+}
+
+/* Photo placeholder — the striped block used until real photos are uploaded. */
+.photo-placeholder {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--photo-a) 0 10px,
+    var(--photo-b) 10px 20px
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 12px ui-monospace, Menlo, monospace;
+  color: var(--muted);
+  text-align: center;
+}

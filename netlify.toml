@@ -1,0 +1,10 @@
+# Netlify deploy config for Coffee Kidd Cafe.
+# Connect this repo in the Netlify dashboard (see SETUP.md) and it will
+# auto-deploy on every push to `main`.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"

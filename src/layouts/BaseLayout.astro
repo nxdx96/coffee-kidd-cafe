@@ -1,0 +1,42 @@
+---
+/**
+ * BaseLayout — the shared HTML shell for every page.
+ *
+ * Phase 0: loads the two Google Fonts once, the global design tokens, and the
+ * pixel cat cursor. The full two-column "paper" grid layout (left info column +
+ * bottom-pinned nav, responsive collapse at 760px) lands in Phase 1.
+ */
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'A space for coffee, tea, matcha and company. McGinley Square, Jersey City.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Fonts: Grenze Gotisch (wordmark only) + Shippori Mincho (everything else) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch&family=Shippori+Mincho:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+    <script src="/cat-cursor.js" defer></script>
+  </body>
+</html>
