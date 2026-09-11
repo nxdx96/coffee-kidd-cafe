@@ -10,7 +10,11 @@ import { getStoryPage } from '../lib/content';
 const story = await getStoryPage();
 ---
 
-<PageLayout title="Coffee Kidd Cafe — Story" current="story">
+<PageLayout
+  title="Coffee Kidd Cafe — Story"
+  description="The story behind Coffee Kidd Cafe — best friends Natalia Amaya and Zach Kidd, twenty years of hospitality, one McGinley Square coffee shop."
+  current="story"
+>
   <p slot="info">Story</p>
   <p slot="info" class="muted">
     {story.identity.map((line, i) => (<>{i > 0 && <br />}{line}</>))}

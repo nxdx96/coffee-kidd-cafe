@@ -1,22 +1,26 @@
 ---
 /**
- * BaseLayout — the shared HTML shell for every page.
- *
- * Phase 0: loads the two Google Fonts once, the global design tokens, and the
- * pixel cat cursor. The full two-column "paper" grid layout (left info column +
- * bottom-pinned nav, responsive collapse at 760px) lands in Phase 1.
+ * BaseLayout — the shared HTML shell for every page: fonts, design tokens, SEO
+ * and social meta, favicon, and the pixel cat cursor + form enhancement scripts.
  */
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
+  /** Social-share image path (defaults to the branded OG card). */
+  image?: string;
 }
 
 const {
   title,
   description = 'A space for coffee, tea, matcha and company. McGinley Square, Jersey City.',
+  image = '/og.png',
 } = Astro.props;
+
+// Absolute URLs for canonical + social tags (Astro.site = https://coffeekiddcafe.com).
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -26,6 +30,27 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#f4f2ed" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Coffee Kidd Cafe" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <!-- Fonts: Grenze Gotisch (wordmark only) + Shippori Mincho (everything else) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

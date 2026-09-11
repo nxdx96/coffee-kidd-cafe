@@ -16,7 +16,11 @@ const home = await getHomePage();
 ---
 
 {settings.preLaunch ? <ComingSoon /> : (
-<PageLayout title="Coffee Kidd Cafe — Home" current="home">
+<PageLayout
+  title="Coffee Kidd Cafe — Home"
+  description="A new neighborhood cafe in McGinley Square, Jersey City — coffee, tea, matcha and community. Opening late fall 2026."
+  current="home"
+>
   <p slot="info">{settings.tagline}</p>
 
   <p slot="info">

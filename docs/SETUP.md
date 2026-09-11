@@ -88,6 +88,36 @@ unchanged and nothing breaks.
 
 Subscribers/messages live in the chosen service — the founders manage them there, no database here.
 
+## Brand assets
+
+The favicon and social-share image are generated from the pixel cat:
+```bash
+npm run gen:assets   # writes public/favicon.svg, favicon-32.png, apple-touch-icon.png, og.png
+```
+Re-run only if you change the design; the outputs are committed. A designer can later replace
+`public/og.png` (1200×630) with a fully art-directed card.
+
+## Go-live checklist
+
+**Launch (before opening day)**
+- [ ] Connect Netlify/Vercel to the repo; site builds from `main` (Deploy section above).
+- [ ] Point `coffeekiddcafe.com` DNS at the host; confirm HTTPS.
+- [ ] Create the Sanity project, `npm run seed`, deploy the Studio, set `SANITY_PROJECT_ID` on the
+      host (Content editing section).
+- [ ] Connect the mailing-list + contact form services; set `PUBLIC_MAILING_ENDPOINT` /
+      `PUBLIC_CONTACT_ENDPOINT` (Forms section).
+- [ ] Confirm Instagram/TikTok URLs and the contact email in **Site settings**.
+- [ ] Leave **Pre-launch mode ON** — `/` shows Coming-soon; the mailing list still collects sign-ups.
+- [ ] Test on a real phone; submit the signup once end-to-end.
+- [ ] Hand the founders [`FOUNDER-GUIDE.md`](FOUNDER-GUIDE.md) and walk through the Studio.
+
+**Opening day (founders, no developer)**
+- [ ] Post the street address and hours in **Site settings**; clear the "posted before opening" notes.
+- [ ] Add the first **Menu items** (nav flips "Menu, soon" → "Menu" automatically).
+- [ ] Add any **Events**; set "Now on the walls".
+- [ ] Replace placeholder photos with the real shoot (room, Natalia, Zach, a cup on the counter).
+- [ ] **Turn OFF Pre-launch mode** → the full homepage goes live.
+
 ## Notes
 - Secrets (Sanity token, form service keys) live in `.env` locally and in the host's environment
   variable settings — never commit them. `.gitignore` already excludes `.env`.

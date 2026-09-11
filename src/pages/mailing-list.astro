@@ -16,7 +16,11 @@ const mailing = await getMailingListPage();
 const year = new Date().getFullYear();
 ---
 
-<PageLayout title="Coffee Kidd Cafe — Mailing list" current="mailing">
+<PageLayout
+  title="Coffee Kidd Cafe — Mailing list"
+  description="Join the Coffee Kidd Cafe mailing list — opening day, art shows, food drives and late nights. A couple emails a month, no more."
+  current="mailing"
+>
   <p slot="info">Mailing list</p>
   {mailing.sidebarNotes.map((note) => <p slot="info" class="muted">{note}</p>)}
 
