@@ -1,0 +1,23 @@
+---
+/**
+ * FormHiddenFields — the hidden inputs a form service needs, kept in one place:
+ *   - access_key: Web3Forms key (only rendered when configured)
+ *   - subject:    a readable email subject (Web3Forms) — the mockup's _subject
+ *                 (Formspree) is also emitted so either service works
+ *   - botcheck:   Web3Forms honeypot; bots tick it, humans never see it
+ *
+ * Extra fields are ignored by services that don't use them, so the forms stay
+ * provider-agnostic.
+ */
+import { forms } from '../lib/forms';
+
+interface Props {
+  subject: string;
+}
+const { subject } = Astro.props;
+---
+
+{forms.accessKey && <input type="hidden" name="access_key" value={forms.accessKey} />}
+<input type="hidden" name="subject" value={subject} />
+<input type="hidden" name="_subject" value={subject} />
+<input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />

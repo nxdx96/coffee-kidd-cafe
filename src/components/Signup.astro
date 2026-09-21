@@ -9,6 +9,7 @@
  * When no endpoint is configured, the form stays inert.
  */
 import Action from './Action.astro';
+import FormHiddenFields from './FormHiddenFields.astro';
 
 interface Props {
   title?: string;
@@ -19,6 +20,8 @@ interface Props {
   /** Mailing form-service URL (from src/lib/forms.ts). */
   endpoint?: string;
   successText?: string;
+  /** Email subject for the submission. */
+  subject?: string;
 }
 
 const {
@@ -29,6 +32,7 @@ const {
   name = 'contact',
   endpoint,
   successText = "You're on the list. See you at opening.",
+  subject = 'New Coffee Kidd signup',
 } = Astro.props;
 ---
 
@@ -40,6 +44,7 @@ const {
     action={endpoint}
     data-endpoint={endpoint}
   >
+    <FormHiddenFields subject={subject} />
     <input class="signup__input" type="text" name={name} placeholder={placeholder} required />
     <Action label={actionLabel} as="submit" />
   </form>

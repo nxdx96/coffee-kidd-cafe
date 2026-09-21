@@ -7,6 +7,7 @@ import PageLayout from '../components/PageLayout.astro';
 import Field from '../components/Field.astro';
 import ChoiceGroup from '../components/ChoiceGroup.astro';
 import Action from '../components/Action.astro';
+import FormHiddenFields from '../components/FormHiddenFields.astro';
 import { getSiteSettings, getContactPage } from '../lib/content';
 import { forms } from '../lib/forms';
 
@@ -40,7 +41,7 @@ const contact = await getContactPage();
 
   <div class="form-wrap" data-form>
     <form class="form js-form" method="post" action={forms.contact} data-endpoint={forms.contact}>
-      <input type="hidden" name="_subject" value="Coffee Kidd — contact form" />
+      <FormHiddenFields subject="Coffee Kidd — contact form" />
       <Field label="Name" name="name" placeholder="your name" required />
       <Field label="Email or phone" name="contact" placeholder="how do we reach you" required />
       <ChoiceGroup
