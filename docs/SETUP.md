@@ -66,25 +66,33 @@ nothing is blocked — the CMS just isn't the source yet.
 
 ## Forms (mailing list + contact)
 
-The mailing-list, contact, and homepage signup forms are **built and wired**. They submit to a
-form service you choose; until an endpoint is set they stay inert (no submit), so the design is
-unchanged and nothing breaks.
+The mailing-list, contact, and homepage signup forms are **built and wired**. Until an endpoint is
+set they stay inert (no submit), so the design is unchanged and nothing breaks.
 
-1. Pick a service that accepts a POST of form fields and returns 2xx — e.g.
-   [Formspree](https://formspree.io), [Web3Forms](https://web3forms.com), or a newsletter tool's
-   embed form ([Buttondown](https://buttondown.email), Mailchimp).
-   - **Contact** → a form-to-email service (Formspree is simplest; delivers to
-     `coffeekiddcafe@gmail.com`).
-   - **Mailing list / signups** → the newsletter tool where the founders will actually send emails,
-     or Formspree to start and export later.
-2. Create each form there and copy its POST URL.
-3. Set the endpoints (repo root `.env`, and the host's env settings for production):
+### Recommended: Web3Forms (free, fits the code)
+
+1. Go to [web3forms.com](https://web3forms.com), enter **coffeekiddcafe@gmail.com**, and get an
+   **Access Key** (emailed — no account/password to manage). Submissions arrive in that inbox;
+   distinct email subjects tell mailing-list vs contact apart.
+2. In **Cloudflare Pages → your project → Settings → Environment variables**, add for **Production**
+   (and Preview if you want previews to submit too):
    ```
-   PUBLIC_CONTACT_ENDPOINT=https://formspree.io/f/your-id
-   PUBLIC_MAILING_ENDPOINT=https://your-newsletter-or-formspree-url
+   PUBLIC_MAILING_ENDPOINT=https://api.web3forms.com/submit
+   PUBLIC_CONTACT_ENDPOINT=https://api.web3forms.com/submit
+   PUBLIC_WEB3FORMS_KEY=your-access-key
    ```
-4. Redeploy. With JavaScript, submitting shows an in-style confirmation without leaving the page;
-   without JS it falls back to a normal POST.
+3. **Redeploy** (Deployments → Retry deployment, or push any commit). Test: submit the Coming-soon
+   "Notify me" once and confirm the email lands in the inbox.
+
+With JavaScript, submitting shows an in-style confirmation without leaving the page; without JS it
+falls back to a normal POST. A built-in honeypot drops bots.
+
+When it's time to actually **send** an opening-day email, export the collected addresses into a
+sender (e.g. [Buttondown](https://buttondown.email), Mailchimp) — no code change.
+
+> Prefer Formspree instead? Create one form per use, set `PUBLIC_MAILING_ENDPOINT` /
+> `PUBLIC_CONTACT_ENDPOINT` to the form URLs, and leave `PUBLIC_WEB3FORMS_KEY` blank. The forms are
+> provider-agnostic — extra hidden fields are ignored by whichever service you pick.
 
 Subscribers/messages live in the chosen service — the founders manage them there, no database here.
 

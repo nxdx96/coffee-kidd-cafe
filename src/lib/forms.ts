@@ -14,4 +14,10 @@
 export const forms = {
   mailing: (import.meta.env.PUBLIC_MAILING_ENDPOINT as string | undefined) || undefined,
   contact: (import.meta.env.PUBLIC_CONTACT_ENDPOINT as string | undefined) || undefined,
+  /**
+   * Web3Forms access key (public by design). Rendered as a hidden `access_key`
+   * field when set. Ignored by services that don't need it (e.g. Formspree),
+   * so the forms stay provider-agnostic.
+   */
+  accessKey: (import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined) || undefined,
 };

@@ -9,6 +9,7 @@ import Field from '../components/Field.astro';
 import ChoiceGroup from '../components/ChoiceGroup.astro';
 import Action from '../components/Action.astro';
 import Photo from '../components/Photo.astro';
+import FormHiddenFields from '../components/FormHiddenFields.astro';
 import { getMailingListPage } from '../lib/content';
 import { forms } from '../lib/forms';
 
@@ -30,6 +31,7 @@ const year = new Date().getFullYear();
 
   <div class="form-wrap" data-form>
     <form class="form js-form" method="post" action={forms.mailing} data-endpoint={forms.mailing}>
+      <FormHiddenFields subject="New Coffee Kidd mailing-list signup" />
       <ChoiceGroup
         label="Reach me by"
         name="reachBy"
