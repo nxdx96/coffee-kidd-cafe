@@ -1,0 +1,4 @@
+# Cloudflare Pages headers. Astro fingerprints assets under /_astro/, so they can
+# be cached forever; HTML stays revalidated so content edits show up fast.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
